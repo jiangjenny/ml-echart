@@ -1,0 +1,274 @@
+.ml_page {
+  width: 19.2rem;
+  height: 100%;
+  background: url("../../static/img/trade.jpg") no-repeat center top;
+  background-size: cover;
+  display: block;
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 0 0.35rem 0.35rem;
+}
+.ml_page header {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 13%;
+}
+.ml_page header img {
+  width: 2.06rem;
+  height: 0.49rem;
+  position: absolute;
+  top: 0.45rem;
+  left: 0;
+}
+.ml_page header p {
+  font-size: 0.4rem;
+  color: #daf9ff;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
+  line-height: 0.94rem;
+  letter-spacing: 0.08rem;
+}
+.ml_page header .format_date {
+  font-size: 0.16rem;
+  color: #01fafe;
+  text-align: right;
+  position: absolute;
+  top: 0.36rem;
+  right: 0;
+  width: 1.56rem;
+  height: 0.57rem;
+  background: url("../../static/img/timebg.png") no-repeat center top;
+  background-size: cover;
+}
+.ml_page header .format_date .date {
+  position: absolute;
+  top: 0.03rem;
+  right: 0.13rem;
+}
+.ml_page header .format_date .week {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.89rem;
+}
+.ml_page header .format_date .time {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.13rem;
+}
+.ml_page .l_body,
+.ml_page .l_trade,
+.ml_page .r_body,
+.ml_page .m_trade,
+.ml_page .r_bottom {
+  border: 2px solid rgba(31, 103, 163, 0.7);
+  border-top: none;
+  box-shadow: rgba(31, 70, 105, 0.8) 0px 0px 2px 2px inset;
+}
+.ml_page main {
+  height: 87%;
+  position: relative;
+  left: 0;
+  top: 0;
+}
+.ml_page main .head {
+  width: 100%;
+  height: 7%;
+  font-size: 0.16rem;
+  line-height: 1.5;
+  font-weight: 700;
+  color: #eaeff2;
+  text-align: center;
+  text-shadow: 2px 2px 5px #eaeff2;
+  border: 2px solid rgba(31, 103, 163, 0.7);
+  box-shadow: rgba(31, 70, 105, 0.8) 0px 0px 2px 2px inset;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.ml_page main .m-top {
+  height: 7%;
+  width: 100%;
+}
+.ml_page main .m-top span {
+  display: block;
+  line-height: 300%;
+  height: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 0.2rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 5px #eaeff2;
+}
+.ml_page main .m-top .bg {
+  width: 100%;
+  height: 7%;
+  background: url("../../static/img/light.png") no-repeat center top;
+  background-size: cover;
+  position: absolute;
+  top: -0.05rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.ml_page main .left {
+  width: 23.3%;
+  height: 100%;
+  position: relative;
+  left: 0;
+  top: 0;
+}
+.ml_page main .left .l_top {
+  width: 100%;
+  height: 64%;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.ml_page main .left .l_top .l_body {
+  width: 100%;
+  height: 93%;
+  position: absolute;
+  top: 7%;
+  left: 0;
+}
+.ml_page main .left .l_bottom {
+  width: 100%;
+  height: 33%;
+  margin-top: 6.2%;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.ml_page main .left .l_bottom .l_head {
+  width: 100%;
+  height: 15%;
+}
+.ml_page main .left .l_bottom .l_trade {
+  width: 100%;
+  height: 85%;
+  position: absolute;
+  top: 15%;
+  left: 0;
+}
+.ml_page main .right {
+  width: 23.3%;
+  height: 100%;
+  position: relative;
+  left: 0;
+  top: -100%;
+}
+.ml_page main .right .r_top {
+  width: 100%;
+  height: 60%;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.ml_page main .right .r_top .r_body {
+  width: 100%;
+  height: 93%;
+  position: absolute;
+  top: 7%;
+  left: 0;
+}
+.ml_page main .right .r_bottom {
+  width: 100%;
+  height: 37%;
+  margin-top: 5.85%;
+  position: relative;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+.ml_page main .right .r_bottom .b_top {
+  height: 15%;
+}
+.ml_page main .right .r_bottom .b_top .bg {
+  height: 11%;
+  top: 0;
+}
+.ml_page main .right .r_bottom .b_body {
+  width: 100%;
+  height: 89%;
+  position: absolute;
+  top: 0.3rem;
+  left: 0;
+}
+.ml_page main .middle {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  left: 0;
+  top: 0;
+  margin: 0 auto;
+  border: 2px solid rgba(31, 103, 163, 0.7);
+  box-shadow: rgba(31, 70, 105, 0.8) 0px 0px 2px 2px inset;
+}
+.ml_page main .middle .m_body {
+  height: 100%;
+  box-sizing: border-box;
+}
+.ml_page main .middle .m_body .m-bottom {
+  height: 93%;
+  width: 100%;
+}
+.head::before,
+.head::after,
+.l_top::before,
+.l_top::after,
+.l_bottom::before,
+.l_bottom::after,
+.r_top::before,
+.r_top::after,
+.r_bottom::before,
+.r_bottom::after,
+.m-top::before,
+.m-top::after,
+.m-bottom::before,
+.m-bottom::after {
+  content: "";
+  position: absolute;
+  width: 0.03rem;
+  height: 0.03rem;
+  border: 1px solid rgba(22, 145, 224, 0.2);
+  background-color: #0d93e8;
+  box-shadow: #fff 0px 0px 10px;
+}
+.head::before,
+.m-top::before {
+  top: -0.04rem;
+  left: -0.04rem;
+}
+.head::after,
+.m-top::after {
+  top: -0.04rem;
+  right: -0.04rem;
+}
+.l_top::before,
+.l_bottom::before {
+  bottom: 0rem;
+  left: 0rem;
+}
+.l_top::after,
+.l_bottom::after {
+  bottom: 0rem;
+  right: 0rem;
+}
+.r_top::before,
+.r_bottom::before,
+.m-bottom::before {
+  bottom: -0.04rem;
+  left: -0.04rem;
+}
+.r_top::after,
+.r_bottom::after,
+.m-bottom::after {
+  bottom: -0.04rem;
+  right: -0.04rem;
+}
+.Provincial {
+  height: 100% !important;
+}
