@@ -43,7 +43,9 @@
           </div>
           <div class="m-bottom">
             <transition>
-              <Map1 ref="Map1" :mapdata="mapdata"></Map1>
+              <!-- <Map1 ref="Map1" :mapdata="mapdata"></Map1>
+               -->
+               <BaiDuMap :mapdata="mapdata"></BaiDuMap>
             </transition>
           </div>
         </div>
@@ -74,8 +76,11 @@ import cityDayTrade from "../components/cityDayTrade";
 import finalTable from "../components/finalTable";
 import InstallationChart from "../components/InstallationChart";
 import rollTable from "../components/rollTable";
-import Map1 from "../components/map1";
+// import Map1 from "../components/map1";
 import "../../static/css/page.css";
+
+import BaiDuMap from '../components/baiduMap'
+
 export default {
   data() {
     return {
@@ -179,7 +184,8 @@ export default {
     finalTable,
     rollTable,
     InstallationChart,
-    Map1
+    // Map1,
+    BaiDuMap
   }
 };
 </script>

@@ -223,9 +223,7 @@ export default {
               name: 'Top 5',
               type: 'effectScatter',
               coordinateSystem: 'geo',
-              data: convertData(data.sort(function (a, b) {
-                return b.value - a.value;
-              }).slice(0, 5)),
+              data: convertData(data.sort((a, b)=> {return b.value - a.value}).slice(0, 5)),
               symbolSize: function (val,data) {
                 return Number(val[2] / data.data.items[0])*35;
               },

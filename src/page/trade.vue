@@ -36,7 +36,7 @@
           </div>
           <div class="m-bottom">
             <transition>
-              <Map ref="Map" :mapdata="mapdata"></Map>
+              <baiduMap ref="Map" :mapdata="mapdata"></baiduMap>
             </transition>
           </div>
         </div>
@@ -67,7 +67,7 @@ import cityDayTrade from "../components/cityDayTrade";
 import tradeTable from "../components/tradeTable";
 import provincialDayTrade from "../components/provincialDayTrade";
 import tradeChart from "../components/tradeChart";
-import Map from "../components/map";
+import baiduMap from "../components/baiduMap";
 import "../../static/css/page.css";
 export default {
   data() {
@@ -131,13 +131,16 @@ export default {
             break;
           }
         }
+        
       }
       // 地州市
       this.$refs.cityDayTrade.$nextTick(() => {
         this.$refs.cityDayTrade.draw();
       });
+      // 重新渲染百度地图  操作之后渲染 会重新开始 不会保持原状
       this.$refs.Map.$nextTick(() => {
         this.$refs.Map.draw(this.mapdata);
+        
       });
       // 全省当日交易数据
       var items2 = data.message[1];
@@ -186,7 +189,7 @@ export default {
     tradeTable,
     provincialDayTrade,
     tradeChart,
-    Map
+    baiduMap
   }
 };
 </script>
