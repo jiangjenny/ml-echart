@@ -16,13 +16,15 @@
       </el-form-item>
     </el-form>
     <div id="allmap" style="height:91%"></div>
+    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
   </div>
 </template>
 <script>
-import  '../../static/css/baiduMap.css'
+import  '../../static/css/baiduMap.css';
+import bus from "../util/bus.js";
 export default {
   props:{
-    BMapMsg:{ keyword: String },
+    BMapMsg:{ keyword: String},
     mapdata:Array
   },
   data(){
@@ -45,11 +47,115 @@ export default {
   methods: {
     // 地图js
     loadmap(){
-      // 百度地图API功能
       this.map = new BMap.Map("allmap");//实例化百度地图
       this.map.centerAndZoom(new BMap.Point(112.98,28.19), 12);//设置中心点位与缩放级别
       this.map.enableScrollWheelZoom();//启用滚动
+      // // 模糊搜索
+      this.searchVal();
+      
     },
+    // 模糊搜索
+    searchVal(){
+      var _this = this;
+      var map = this.map;
+       // 百度地图API功能
+      function G(id) {
+        return document.getElementById(id);
+      }
+      var geoc = new BMap.Geocoder();
+      map.addEventListener("click", function(e) {
+        var pt = e.point;
+        _this.locationMsg.lnglat = pt.lng + "," + pt.lat;
+        map.clearOverlays();
+        map.addOverlay(new BMap.Marker(pt)); //添加标注
+        geoc.getLocation(pt, function(rs) {
+          var addComp = rs.address;
+          if (addComp == "") {
+            _this.locationMsg.address = "";
+            _this.$message.error("无法获取当前位置信息");
+          } else {
+            _this.locationMsg.address = addComp;
+          }
+        });
+      });
+      var ac = new BMap.Autocomplete({
+        //建立一个自动完成的对象
+        input: "suggestId",
+        location: map
+      });
+      ac.addEventListener("onhighlight", function(e) {
+        //鼠标放在下拉列表上的事件
+        var str = "";
+        var _value = e.fromitem.value;
+        var value = "";
+        if (e.fromitem.index > -1) {
+          value =
+            _value.province +
+            _value.city +
+            _value.district +
+            _value.street +
+            _value.business;
+        }
+        str =
+          "FromItem<br />index = " +
+          e.fromitem.index +
+          "<br />value = " +
+          value;
+
+        value = "";
+        if (e.toitem.index > -1) {
+          _value = e.toitem.value;
+          value =
+            _value.province +
+            _value.city +
+            _value.district +
+            _value.street +
+            _value.business;
+        }
+        str +=
+          "<br />ToItem<br />index = " +
+          e.toitem.index +
+          "<br />value = " +
+          value;
+        G("searchResultPanel").innerHTML = str;
+      });
+
+      var myValue;
+      ac.addEventListener("onconfirm", function(e) {
+        //鼠标点击下拉列表后的事件
+        var _value = e.item.value;
+        myValue =
+          _value.province +
+          _value.city +
+          _value.district +
+          _value.street +
+          _value.business;
+        G("searchResultPanel").innerHTML =
+          "onconfirm<br />index = " +
+          e.item.index +
+          "<br />myValue = " +
+          myValue;
+
+        setPlace();
+      });
+
+      function setPlace() {
+        map.clearOverlays(); //清除地图上所有覆盖物
+        function myFun() {
+          // console.log(local.getResults())
+          var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+          console.log(pp);
+          map.centerAndZoom(pp, 15);
+          map.addOverlay(new BMap.Marker(pp)); //添加标注
+        }
+        var local = new BMap.LocalSearch(map, {
+          //智能搜索
+          onSearchComplete: myFun
+        });
+        local.search(myValue);
+      }
+    },
+    // 重绘
     draw(mapdata){
       this.map.clearOverlays();//清除到地图上所有的
       var geoCoordMap= {
@@ -68,123 +174,77 @@ export default {
           "娄底市": [112.008497, 27.728136],
           "益阳市": [112.355042, 28.570066]
       }
-
       var dataItem = [];
+      var mapArr = [];
       var topArr = [];
       var smallArr = [];
       var midArr = [];
-      var p = [];
-      var topitem= '';
-      var smallitem= '';
-      var middleitem= '';
       for(var i=0;i<mapdata.length;i++){
         dataItem.push(mapdata[i].value);
         dataItem = dataItem.sort((a,b)=>b-a); //数据排序显示不同图标大小
-        p.push(geoCoordMap[mapdata[i].name].concat(mapdata[i].value)); // 经纬度集合和金额数组
-
-      }
-      
-      for(var j=0;j<dataItem.length;j++){
-        topitem = dataItem.slice(0,5)[j];
-        smallitem = dataItem.slice(-5)[j];
-        middleitem = dataItem.slice(5,-5)[j];
-      }
-      for(var k=0;k<p.length;k++){
-        var pp = p[k];
-        
-      }
-      console.log(topitem); //un未定义
-        if(topitem==pp[2]){  //如果两者相等 说明属于top5
-        topArr.unshift({
-          lng: p[0],
-          lat: p[1],
-          item: p[2]
+        mapArr.push({
+          lng: geoCoordMap[mapdata[i].name][0],
+          lat: geoCoordMap[mapdata[i].name][1],
+          value: mapdata[i].value
         })
-        
       }
-      console.log(topArr);
-
-        // else if(smallitem==p[2]){
-        //   smallArr.push({
-        //     lng: p[0],
-        //     lat: p[1],
-        //     item: p[3]
-        //   })
-
-        // }else if(middleitem==p[2]){
-        //   midArr.push({
-        //     lng: p[0],
-        //     lat: p[1],
-        //     item: p[3]
-        //   })
-        // }
-      // icon
-      var top5Icon = new BMap.Icon("../../static/img/top5.png", new BMap.Size(50,50));
-      var middle = new BMap.Icon("../../static/img/middle.png", new BMap.Size(30,30));
-      var small5 = new BMap.Icon("../../static/img/small5.png", new BMap.Size(15,15));
-      var geoCoordMapValue = {};
+      for(var j=0;j<mapArr.length;j++){
+        var item = mapArr[j];
+        for(var k=0;k<dataItem.length;k++){
+          if(dataItem.slice(0,5)[k]==item.value){  //如果两者相等 说明属于top5
+            topArr.push({
+              lng: item.lng,
+              lat: item.lat
+            }) 
+            break;
+          }else if(dataItem.slice(-5)[k]==item.value){
+            smallArr.push({
+              lng: item.lng,
+              lat: item.lat
+            }) 
+            break;
+          }else if(dataItem.slice(5,-5)[k]==item.value){
+            midArr.push({
+              lng: item.lng,
+              lat: item.lat
+            }) 
+            break;
+          }
+        }
+      }
       var marker=[];
-
-      var pTop = {};
-      var pSmall = {};
-      var pMid = {};
       var pt = {};
-      // 拿到前五的每一项
-      // for(let j=0;j<topArr.length;j++){
-      //     pTop = topArr[j];
-      // }
-      // console.log(pTop);
-      // for(let k=0;k<smallArr.length;k++){
-      //   pSmall = smallArr[k];
-      // }
-      // for(let m=0;m<midArr.length;m++){
-      //   pMid = midArr[m];
-      // }
       // 设置标注
       for(var i=0;i<mapdata.length;i++){
         var item = mapdata[i];
-        geoCoordMapValue.lng= geoCoordMap[item.name][0];
-        geoCoordMapValue.lat= geoCoordMap[item.name][1];
+        var geoCoordMapValue = {
+          lng: geoCoordMap[item.name][0],
+          lat: geoCoordMap[item.name][1]
+        }
         pt = new BMap.Point(geoCoordMapValue.lng,geoCoordMapValue.lat);  
         //pt如果属于前五的数组中，说明是前五的可以加图片
-   
-        // if(pTop.lng==pt.lng && pTop.lat==pt.lat){
-        //     // console.log(-1111);
-        //     marker=new BMap.Marker(pt,{icon:top5Icon});//实例marker
-        // }
-        // for(let k=0;k<smallArr.length;k++){
-        //   pSmall = smallArr[k];
-        //   if(pSmall.lng==pt.lng && pSmall.lat==pt.lat){
-        //     // console.log(pSmall);
-        //     // console.log(-2222);
-        //     marker=new BMap.Marker(pt,{icon:small5});//实例marker
-        //   }
-        // }
-        // for(let m=0;m<midArr.length;m++){
-        //   pMid = midArr[m];
-        //   if(pMid.lng==pt.lng && pMid.lat==pt.lat){
-        //     // console.log(-3333);
-        //     marker=new BMap.Marker(pt,{icon:middle});//实例marker
-        //   }
-        // }
-        // if(pTop.lng==pt.lng && pTop.lat==pt.lat){
-        //   console.log(-1111);
-        //   marker=new BMap.Marker(pt,{icon:top5Icon});//实例marker
-        // }else if(pSmall.lng==pt.lng && pSmall.lat==pt.lat){
-        //   console.log(pSmall);
-        //    console.log(-2222);
-        //   marker=new BMap.Marker(pt,{icon:small5});//实例marker
-        // }else if(pMid.lng==pt.lng && pMid.lat==pt.lat){
-        //    console.log(-3333);
-          marker=new BMap.Marker(pt,{icon:middle});//实例marker
-        // }
+        for(var j=0;j<topArr.length;j++){
+          if(topArr[j].lng==pt.lng && topArr[j].lat==pt.lat){
+             marker=new BMap.Marker(pt,{icon: new BMap.Icon("../../static/img/top5.png", new BMap.Size(50,50))});//实例marker
+          }
+        }
+        for(var k=0;k<smallArr.length;k++){
+          if(smallArr[k].lng==pt.lng && smallArr[k].lat==pt.lat){
+             marker=new BMap.Marker(pt,{icon: new BMap.Icon("../../static/img/small5.png", new BMap.Size(30,30))});//实例marker
+          }
+        }
+        for(var m=0;m<midArr.length;m++){
+          if(midArr[m].lng==pt.lng && midArr[m].lat==pt.lat){
+             marker=new BMap.Marker(pt,{icon: new BMap.Icon("../../static/img/middle.png", new BMap.Size(20,20))});//实例marker
+          }
+        }
         this.map.addOverlay(marker);//添加到地图上
         if(marker.point.lng===geoCoordMapValue.lng && marker.point.lat===geoCoordMapValue.lat ){
           this.addClickHandler(item.name + '：' + item.value + '元',marker);
         }
       }
     },
-     // 点击marker方法
+    // 点击marker方法
     addClickHandler(content,marker){
       marker.addEventListener("mouseover",(e)=>{
         this.openInfo(content,marker,e)}
@@ -198,8 +258,8 @@ export default {
         title : "<span style='font-size:16px;color: #333'>交易数据</span>",
         enableMessage:true//设置允许信息窗发送短息
       };
-      var p = e.target;
-      var point = new BMap.Point(p.getPosition().lng,p.getPosition().lat);
+      // var p = e.target;
+      var point = new BMap.Point(e.target.getPosition().lng, e.target.getPosition().lat);
       var infoWindow = new BMap.InfoWindow(content,opts);  //创建信息窗口
       marker.openInfoWindow(infoWindow,point); //开启信息窗口
     },
